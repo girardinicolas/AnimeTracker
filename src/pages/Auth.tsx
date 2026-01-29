@@ -53,9 +53,11 @@ const Auth: React.FC = () => {
                 className="w-full max-w-md bg-slate-900 border border-white/10 rounded-[2.5rem] shadow-2xl p-8 backdrop-blur-xl relative z-10"
             >
                 <div className="flex flex-col items-center mb-8">
-                    <div className="w-16 h-16 bg-rose-600 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(225,29,72,0.4)] mb-6">
-                        <img src="logo.png" alt="AT" className="w-10 h-10 invert brightness-0" />
-                    </div>
+                    <img
+                        src="logo.png"
+                        alt="AnimeTracker Logo"
+                        className="w-24 h-24 mb-6 drop-shadow-[0_0_15px_rgba(225,29,72,0.5)] hover:scale-105 transition-transform duration-500"
+                    />
                     <h1 className="text-3xl font-black text-white tracking-tight">AnimeTracker</h1>
                     <p className="text-slate-500 font-bold uppercase tracking-[0.2em] text-[10px] mt-2">
                         {isLogin ? t('login') : t('register')}

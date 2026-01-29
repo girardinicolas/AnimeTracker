@@ -24,7 +24,13 @@ const Auth: React.FC = () => {
                 const { error } = await supabase.auth.signInWithPassword({ email, password });
                 if (error) throw error;
             } else {
-                const { error } = await supabase.auth.signUp({ email, password });
+                const { error } = await supabase.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        emailRedirectTo: 'https://girardinicolas.github.io/AnimeTracker/'
+                    }
+                });
                 if (error) throw error;
                 setSuccess(true);
             }

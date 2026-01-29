@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { type UserAnime } from '../db';
 import { animeActions } from '../hooks/useAnime';
-import { X, Trash2, Save } from 'lucide-react';
+import { X, Trash2, Save, Sparkles, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
+import { fetchAnimeLogo } from '../lib/api';
 
 interface AddAnimeModalProps {
     isOpen: boolean;
@@ -12,6 +13,7 @@ interface AddAnimeModalProps {
 }
 
 export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, editAnime }) => {
+    const [isLoadingMetadata, setIsLoadingMetadata] = useState(false);
     const [formData, setFormData] = useState<Omit<UserAnime, 'id' | 'updated_at'>>({
         titolo: '',
         immagine_url: '',
@@ -43,12 +45,41 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
         }
     }, [editAnime, isOpen]);
 
+    const handleMagicFetch = async () => {
+        if (!formData.titolo) return;
+        setIsLoadingMetadata(true);
+        const metadata = await fetchAnimeLogo(formData.titolo);
+        if (metadata) {
+            setFormData(prev => ({
+                ...prev,
+                immagine_url: metadata.immagine_url,
+                episodi_totali: prev.episodi_totali === 12 || prev.episodi_totali === 0
+                    ? metadata.episodi_totali
+                    : prev.episodi_totali,
+            }));
+        }
+        setIsLoadingMetadata(false);
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Final attempt to fetch if URL is still empty
+        let currentData = { ...formData };
+        if (!currentData.immagine_url) {
+            const metadata = await fetchAnimeLogo(currentData.titolo);
+            if (metadata) {
+                currentData.immagine_url = metadata.immagine_url;
+                if (currentData.episodi_totali === 12 || currentData.episodi_totali === 0) {
+                    currentData.episodi_totali = metadata.episodi_totali;
+                }
+            }
+        }
+
         if (editAnime?.id) {
-            await animeActions.update(editAnime.id, formData);
+            await animeActions.update(editAnime.id, currentData);
         } else {
-            await animeActions.add(formData);
+            await animeActions.add(currentData);
         }
         onClose();
     };
@@ -107,15 +138,30 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
                                 />
                             </div>
 
-                            <div className="space-y-2">
+                            <div className="space-y-2 relative">
                                 <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Poster URL</label>
-                                <input
-                                    type="url"
-                                    className="w-full px-6 py-4 bg-slate-800/50 border border-white/5 rounded-2xl text-white placeholder:text-slate-600 focus:ring-2 focus:ring-rose-500/50 focus:border-rose-500/50 outline-none transition-all font-medium"
-                                    value={formData.immagine_url}
-                                    onChange={(e) => setFormData({ ...formData, immagine_url: e.target.value })}
-                                    placeholder="https://image-url.com/poster.jpg"
-                                />
+                                <div className="relative group/input">
+                                    <input
+                                        type="url"
+                                        className="w-full px-6 py-4 bg-slate-800/50 border border-white/5 rounded-2xl text-white placeholder:text-slate-600 focus:ring-2 focus:ring-rose-500/50 focus:border-rose-500/50 outline-none transition-all font-medium pr-16"
+                                        value={formData.immagine_url}
+                                        onChange={(e) => setFormData({ ...formData, immagine_url: e.target.value })}
+                                        placeholder="https://image-url.com/poster.jpg"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={handleMagicFetch}
+                                        disabled={isLoadingMetadata || !formData.titolo}
+                                        className="absolute right-2 top-1/2 -translate-y-1/2 p-3 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-xl transition-all disabled:opacity-30 disabled:grayscale"
+                                        title="Sincronizza con MAL"
+                                    >
+                                        {isLoadingMetadata ? (
+                                            <Loader2 size={20} className="animate-spin" />
+                                        ) : (
+                                            <Sparkles size={20} />
+                                        )}
+                                    </button>
+                                </div>
                             </div>
 
                             <div className="grid grid-cols-3 gap-6">

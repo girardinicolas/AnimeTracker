@@ -66,7 +66,14 @@ Non è necessario scaricare nulla sul tuo PC! AnimeTracker è una **PWA (Progres
 
 ## 🚀 Deployment
 
-L'app è configurata per essere ospitata su **Netlify** o **Vercel** con deployment automatico ad ogni push sul ramo `main`.
+L'app è ospitata su **GitHub Pages** e viene aggiornata automaticamente tramite **GitHub Actions**. Ogni volta che viene effettuato un `push` sul ramo `main`, il workflow compila il progetto e pubblica i file statici.
+
+### Configurazione per il Fork
+Se desideri ospitare la tua versione dell'app:
+1. Fai il **Fork** del repository.
+2. Vai in **Settings > Pages**.
+3. Sotto **Build and deployment > Source**, seleziona **GitHub Actions**.
+4. L'azione di deploy partirà automaticamente.
 
 ## ✍️ Autore
 

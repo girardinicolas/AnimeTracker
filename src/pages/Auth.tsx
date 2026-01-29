@@ -11,11 +11,13 @@ const Auth: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         setError(null);
+        setSuccess(false);
 
         try {
             if (isLogin) {
@@ -24,8 +26,7 @@ const Auth: React.FC = () => {
             } else {
                 const { error } = await supabase.auth.signUp({ email, password });
                 if (error) throw error;
-                // Supabase might require email confirmation, but for now we'll just show a message
-                alert("Check your email for confirmation!");
+                setSuccess(true);
             }
         } catch (err: any) {
             setError(err.message);
@@ -87,8 +88,14 @@ const Auth: React.FC = () => {
                     </div>
 
                     {error && (
-                        <p className="text-rose-500 text-xs font-bold text-center mt-2 bg-rose-500/10 py-2 rounded-lg border border-rose-500/20">
+                        <p className="text-rose-500 text-xs font-bold text-center mt-2 bg-rose-500/10 py-3 px-4 rounded-xl border border-rose-500/20">
                             {error}
+                        </p>
+                    )}
+
+                    {success && (
+                        <p className="text-emerald-500 text-xs font-bold text-center mt-2 bg-emerald-500/10 py-3 px-4 rounded-xl border border-emerald-500/20">
+                            {t('checkSpam')}
                         </p>
                     )}
 

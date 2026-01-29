@@ -50,6 +50,7 @@ const translations = {
         haveAccount: "Hai già un account? Accedi",
         loadingAuth: "Caricamento...",
         logout: "Esci",
+        checkSpam: "Controlla anche la cartella spam per l'email di conferma!",
     },
     en: {
         subtitle: "Your personal collection",
@@ -98,6 +99,7 @@ const translations = {
         haveAccount: "Already have an account? Login",
         loadingAuth: "Loading...",
         logout: "Logout",
+        checkSpam: "Also check your spam folder for the confirmation email!",
     }
 };
 

@@ -9,6 +9,16 @@ AnimeTracker è una web app moderna, veloce e "passionale" progettata per tenere
 
 ![Anime Tracker Logo](/public/logo.png)
 
+## 🌐 Accesso Rapido & Mobile
+
+Non è necessario scaricare nulla sul tuo PC! AnimeTracker è una **PWA (Progressive Web App)** accessibile via browser.
+
+1. **Apri il Link**: Accedi all'URL fornito (es. su Netlify).
+2. **Installa su Mobile**: 
+   - **Android**: Clicca sui tre puntini e seleziona "Installa App".
+   - **iOS**: Clicca sul tasto "Condividi" e seleziona "Aggiungi alla Home".
+3. **Usa Offline**: Una volta installata, l'app funzionerà anche senza connessione internet grazie alla memorizzazione locale.
+
 ## ✨ Caratteristiche Principali
 
 - **🚀 Performance Estreme**: Sviluppata con Vite e React per un caricamento istantaneo.

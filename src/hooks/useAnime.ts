@@ -35,8 +35,18 @@ export const animeActions = {
     },
     incrementProgress: async (anime: UserAnime) => {
         if (anime.id && anime.episodio_corrente < anime.episodi_totali) {
+            const nextEp = anime.episodio_corrente + 1;
+            let nextStato = anime.stato;
+
+            if (nextEp === anime.episodi_totali) {
+                nextStato = 'COMPLETED';
+            } else if (nextEp > 0 && anime.stato === 'PLANNING') {
+                nextStato = 'WATCHING';
+            }
+
             return await db.anime.update(anime.id, {
-                episodio_corrente: anime.episodio_corrente + 1,
+                episodio_corrente: nextEp,
+                stato: nextStato,
                 updated_at: new Date()
             });
         }

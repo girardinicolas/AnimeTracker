@@ -78,6 +78,16 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
             }
         }
 
+        // Automatic state calculation based on progress
+        if (currentData.episodio_corrente === 0) {
+            currentData.stato = 'PLANNING';
+        } else if (currentData.episodio_corrente >= currentData.episodi_totali) {
+            currentData.stato = 'COMPLETED';
+            currentData.episodio_corrente = currentData.episodi_totali; // Cap at total
+        } else {
+            currentData.stato = 'WATCHING';
+        }
+
         if (editAnime?.id) {
             await animeActions.update(editAnime.id, currentData);
         } else {

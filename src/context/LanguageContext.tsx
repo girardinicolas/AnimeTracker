@@ -42,6 +42,14 @@ const translations = {
         developedBy: "Sviluppato con passione da",
         allRightsReserved: "Tutti i diritti riservati.",
         installApp: "Installa App",
+        login: "Accedi",
+        register: "Registrati",
+        email: "Email",
+        password: "Password",
+        noAccount: "Non hai un account? Registrati",
+        haveAccount: "Hai già un account? Accedi",
+        loadingAuth: "Caricamento...",
+        logout: "Esci",
     },
     en: {
         subtitle: "Your personal collection",
@@ -82,6 +90,14 @@ const translations = {
         developedBy: "Developed with passion by",
         allRightsReserved: "All rights reserved.",
         installApp: "Install App",
+        login: "Login",
+        register: "Register",
+        email: "Email",
+        password: "Password",
+        noAccount: "Don't have an account? Register",
+        haveAccount: "Already have an account? Login",
+        loadingAuth: "Loading...",
+        logout: "Logout",
     }
 };
 

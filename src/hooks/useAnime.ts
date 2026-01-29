@@ -1,37 +1,82 @@
-import { useLiveQuery } from 'dexie-react-hooks';
-import { db, type UserAnime } from '../db';
+import { useEffect, useState } from 'react';
+import { supabase } from '../lib/supabase';
+import { type UserAnime } from '../db';
+import { useAuth } from '../context/AuthContext';
 
 export function useAnime(stato?: UserAnime['stato'], sortBy: 'recent' | 'oldest' | 'title' = 'recent') {
-    return useLiveQuery(async () => {
-        let collection = db.anime.toCollection();
+    const { user } = useAuth();
+    const [animeList, setAnimeList] = useState<UserAnime[]>([]);
 
-        if (stato) {
-            collection = db.anime.where('stato').equals(stato);
-        }
+    useEffect(() => {
+        if (!user) return;
 
-        let results = await collection.toArray();
+        const fetchAnime = async () => {
+            let query = supabase
+                .from('anime')
+                .select('*')
+                .eq('user_id', user.id);
 
-        // Sorting logic since we are already in JS and Dexie sorting can be complex for multis
-        results.sort((a, b) => {
-            if (sortBy === 'recent') return b.updated_at.getTime() - a.updated_at.getTime();
-            if (sortBy === 'oldest') return a.updated_at.getTime() - b.updated_at.getTime();
-            if (sortBy === 'title') return a.titolo.localeCompare(b.titolo);
-            return 0;
-        });
+            if (stato) {
+                query = query.eq('stato', stato);
+            }
 
-        return results;
-    }, [stato, sortBy]);
+            const { data, error } = await query;
+
+            if (error) {
+                console.error("Error fetching anime:", error);
+                return;
+            }
+
+            const results = (data || []) as UserAnime[];
+
+            results.sort((a, b) => {
+                if (sortBy === 'recent') return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+                if (sortBy === 'oldest') return new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime();
+                if (sortBy === 'title') return a.titolo.localeCompare(b.titolo);
+                return 0;
+            });
+
+            setAnimeList(results);
+        };
+
+        fetchAnime();
+
+        // Real-time subscription
+        const subscription = supabase
+            .channel('anime_changes')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'anime', filter: `user_id=eq.${user.id}` }, () => {
+                fetchAnime();
+            })
+            .subscribe();
+
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, [user, stato, sortBy]);
+
+    return animeList;
 }
 
 export const animeActions = {
     add: async (anime: Omit<UserAnime, 'id' | 'updated_at'>) => {
-        return await db.anime.add({ ...anime, updated_at: new Date() });
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        return await supabase
+            .from('anime')
+            .insert({ ...anime, user_id: user.id });
     },
     update: async (id: number, anime: Partial<UserAnime>) => {
-        return await db.anime.update(id, { ...anime, updated_at: new Date() });
+        return await supabase
+            .from('anime')
+            .update({ ...anime, updated_at: new Date().toISOString() })
+            .eq('id', id);
     },
     delete: async (id: number) => {
-        return await db.anime.delete(id);
+        return await supabase
+            .from('anime')
+            .delete()
+            .eq('id', id);
     },
     incrementProgress: async (anime: UserAnime) => {
         if (anime.id && anime.episodio_corrente < anime.episodi_totali) {
@@ -44,11 +89,14 @@ export const animeActions = {
                 nextStato = 'WATCHING';
             }
 
-            return await db.anime.update(anime.id, {
-                episodio_corrente: nextEp,
-                stato: nextStato,
-                updated_at: new Date()
-            });
+            return await supabase
+                .from('anime')
+                .update({
+                    episodio_corrente: nextEp,
+                    stato: nextStato,
+                    updated_at: new Date().toISOString()
+                })
+                .eq('id', anime.id);
         }
     }
 };

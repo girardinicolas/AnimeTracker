@@ -8,9 +8,12 @@ import { Plus, LayoutGrid, Shuffle, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
+import { useAuth } from '../context/AuthContext';
+import { LogOut } from 'lucide-react';
 
 const Home: React.FC = () => {
     const { language, setLanguage, t } = useLanguage();
+    const { signOut } = useAuth();
     const [currentTab, setCurrentTab] = useState<UserAnime['stato']>('WATCHING');
     const [sortBy, setSortBy] = useState<'recent' | 'oldest' | 'title'>('recent');
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -145,6 +148,21 @@ const Home: React.FC = () => {
                         >
                             {t('startNow')}
                         </button>
+                        <div className="flex gap-4 mt-8">
+                            <button
+                                onClick={() => setLanguage(language === 'it' ? 'en' : 'it')}
+                                className="w-12 h-12 flex items-center justify-center rounded-2xl bg-slate-900 border border-white/5 text-xs font-black text-slate-400 hover:text-white hover:border-rose-500/30 transition-all active:scale-90"
+                            >
+                                {language.toUpperCase()}
+                            </button>
+                            <button
+                                onClick={signOut}
+                                className="w-12 h-12 flex items-center justify-center rounded-2xl bg-slate-900 border border-white/5 text-slate-400 hover:text-rose-500 hover:border-rose-500/30 transition-all active:scale-90"
+                                title={t('logout')}
+                            >
+                                <LogOut size={18} />
+                            </button>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>

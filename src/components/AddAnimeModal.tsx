@@ -17,6 +17,7 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
         immagine_url: '',
         episodi_totali: 12,
         episodio_corrente: 0,
+        stagione: 1,
         stato: 'PLANNING',
     });
 
@@ -27,6 +28,7 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
                 immagine_url: editAnime.immagine_url,
                 episodi_totali: editAnime.episodi_totali,
                 episodio_corrente: editAnime.episodio_corrente,
+                stagione: editAnime.stagione || 1,
                 stato: editAnime.stato,
             });
         } else {
@@ -35,6 +37,7 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
                 immagine_url: '',
                 episodi_totali: 12,
                 episodio_corrente: 0,
+                stagione: 1,
                 stato: 'PLANNING',
             });
         }
@@ -115,23 +118,33 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
                                 />
                             </div>
 
-                            <div className="grid grid-cols-2 gap-6">
+                            <div className="grid grid-cols-3 gap-6">
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Current Ep</label>
+                                    <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1 text-[10px]">Season</label>
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        className="w-full px-4 py-4 bg-slate-800/50 border border-white/5 rounded-2xl text-white focus:ring-2 focus:ring-rose-500/50 outline-none transition-all font-bold text-center"
+                                        value={formData.stagione}
+                                        onChange={(e) => setFormData({ ...formData, stagione: parseInt(e.target.value) || 1 })}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1 text-[10px]">Current Ep</label>
                                     <input
                                         type="number"
                                         min="0"
-                                        className="w-full px-6 py-4 bg-slate-800/50 border border-white/5 rounded-2xl text-white focus:ring-2 focus:ring-rose-500/50 outline-none transition-all font-bold"
+                                        className="w-full px-4 py-4 bg-slate-800/50 border border-white/5 rounded-2xl text-white focus:ring-2 focus:ring-rose-500/50 outline-none transition-all font-bold text-center"
                                         value={formData.episodio_corrente}
                                         onChange={(e) => setFormData({ ...formData, episodio_corrente: parseInt(e.target.value) || 0 })}
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Total Ep</label>
+                                    <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1 text-[10px]">Total Ep</label>
                                     <input
                                         type="number"
                                         min="1"
-                                        className="w-full px-6 py-4 bg-slate-800/50 border border-white/5 rounded-2xl text-white focus:ring-2 focus:ring-rose-500/50 outline-none transition-all font-bold"
+                                        className="w-full px-4 py-4 bg-slate-800/50 border border-white/5 rounded-2xl text-white focus:ring-2 focus:ring-rose-500/50 outline-none transition-all font-bold text-center"
                                         value={formData.episodi_totali}
                                         onChange={(e) => setFormData({ ...formData, episodi_totali: parseInt(e.target.value) || 1 })}
                                     />

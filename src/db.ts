@@ -6,6 +6,7 @@ export interface UserAnime {
     immagine_url: string;
     episodi_totali: number;
     episodio_corrente: number;
+    stagione: number;
     stato: 'WATCHING' | 'PLANNING' | 'COMPLETED';
     updated_at: Date;
 }
@@ -15,7 +16,7 @@ export class AnimeDatabase extends Dexie {
 
     constructor() {
         super('AnimeTrackerDB');
-        this.version(1).stores({
+        this.version(2).stores({
             anime: '++id, titolo, stato, updated_at'
         });
     }

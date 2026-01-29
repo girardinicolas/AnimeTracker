@@ -74,7 +74,7 @@ export const AnimeCard: React.FC<AnimeCardProps> = ({ anime, onEdit }) => {
                 <div className="space-y-4">
                     <div className="flex justify-between items-end">
                         <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                            Progress <span className="text-white ml-2">{anime.episodio_corrente} / {anime.episodi_totali}</span>
+                            S{anime.stagione} <span className="mx-1 opacity-30">•</span> Ep <span className="text-white ml-2">{anime.episodio_corrente} / {anime.episodi_totali}</span>
                         </div>
                         <span className="text-xs font-black text-rose-500">{progress}%</span>
                     </div>

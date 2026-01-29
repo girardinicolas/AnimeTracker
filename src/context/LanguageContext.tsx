@@ -39,6 +39,8 @@ const translations = {
         addSomeAnime: "Aggiungi degli anime alla lista 'Da Vedere' per girare la ruota!",
         syncMal: "Sincronizza con MAL",
         episodio: "Episodio",
+        developedBy: "Sviluppato con passione da",
+        allRightsReserved: "Tutti i diritti riservati.",
     },
     en: {
         subtitle: "Your personal collection",
@@ -76,6 +78,8 @@ const translations = {
         addSomeAnime: "Add some anime to your 'To Watch' list to spin the wheel!",
         syncMal: "Sync with MAL",
         episodio: "Episode",
+        developedBy: "Developed with passion by",
+        allRightsReserved: "All rights reserved.",
     }
 };
 

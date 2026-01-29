@@ -41,6 +41,7 @@ const translations = {
         episodio: "Episodio",
         developedBy: "Sviluppato con passione da",
         allRightsReserved: "Tutti i diritti riservati.",
+        installApp: "Installa App",
     },
     en: {
         subtitle: "Your personal collection",
@@ -80,6 +81,7 @@ const translations = {
         episodio: "Episode",
         developedBy: "Developed with passion by",
         allRightsReserved: "All rights reserved.",
+        installApp: "Install App",
     }
 };
 

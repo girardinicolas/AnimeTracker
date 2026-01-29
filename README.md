@@ -1,73 +1,64 @@
-# React + TypeScript + Vite
+# 🏯 AnimeTracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)](https://vitejs.dev/)
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Dexie](https://img.shields.io/badge/Dexie.js-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://dexie.org/)
 
-Currently, two official plugins are available:
+AnimeTracker è una web app moderna, veloce e "passionale" progettata per tenere traccia dei tuoi progressi negli anime. Caratterizzata da un design premium dark-rose e animazioni fluide, offre un'esperienza utente raffinata sia su desktop che su mobile.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![Anime Tracker Logo](/public/logo.png)
 
-## React Compiler
+## ✨ Caratteristiche Principali
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **🚀 Performance Estreme**: Sviluppata con Vite e React per un caricamento istantaneo.
+- **📱 PWA Ready**: Installala sul tuo cellulare come un'app nativa e usala offline.
+- **🎨 Design "Passionate"**: Interfaccia dark con accenti rose-red, glassmorphism e micro-interazioni curate.
+- **🪄 Magic Fetch**: Recupera automaticamente le copertine ufficiali e il numero di episodi tramite l'integrazione con l'API di MyAnimeList (Jikan).
+- **🎡 Lucky Spin**: Non sai cosa guardare? Gira la ruota e lascia che il destino scelga per te tra i tuoi anime "Da Vedere".
+- **🌍 Multi-lingua**: Supporto completo per Italiano e Inglese con selettore dedicato.
+- **📊 Offline First**: I tuoi dati sono salvati localmente nel browser utilizzando IndexedDB (grazie a Dexie.js), garantendo privacy e velocità.
+- **📅 Season Tracking**: Tieni traccia non solo degli episodi, ma anche della stagione specifica che stai guardando.
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Frontend**: [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Database**: [Dexie.js](https://dexie.org/) (IndexedDB)
+- **API**: [Jikan API](https://jikan.moe/) (Unofficial MyAnimeList API)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 📦 Installazione Locale
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1. Clona il repository:
+   ```bash
+   git clone https://github.com/girardinicolas/AnimeTracker.git
+   ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+2. Entra nella cartella:
+   ```bash
+   cd AnimeTracker
+   ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+3. Installa le dipendenze:
+   ```bash
+   npm install
+   ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+4. Avvia l'ambiente di sviluppo:
+   ```bash
+   npm run dev
+   ```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🚀 Deployment
+
+L'app è configurata per essere ospitata su **Netlify** o **Vercel** con deployment automatico ad ogni push sul ramo `main`.
+
+## ✍️ Autore
+
+Sviluppato con passione da **NicolasGirardiJD**.
+
+---
+*Creato per i veri fan degli anime che desiderano un tracker elegante e potente.*

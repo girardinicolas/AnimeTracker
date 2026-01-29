@@ -17,7 +17,7 @@ export const Footer: React.FC = () => {
 
                 <div className="flex items-center gap-2 group">
                     <span>{t('developedBy')}</span>
-                    <span className="text-white font-bold tracking-tight hover:text-rose-500 transition-colors cursor-default">TE</span>
+                    <span className="text-white font-bold tracking-tight hover:text-rose-500 transition-colors cursor-default">NicolasGirardiJD</span>
                     <Heart size={14} className="text-rose-500 fill-rose-500 animate-pulse" />
                 </div>
             </div>

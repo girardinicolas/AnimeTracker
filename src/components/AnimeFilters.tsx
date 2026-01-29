@@ -1,5 +1,7 @@
 import React from 'react';
 import { type UserAnime } from '../db';
+import { cn } from '../lib/utils';
+import { motion } from 'framer-motion';
 
 interface AnimeFiltersProps {
     currentTab: UserAnime['stato'];
@@ -12,44 +14,51 @@ export const AnimeFilters: React.FC<AnimeFiltersProps> = ({
     currentTab,
     setCurrentTab,
     sortBy,
-    setSortBy
+    setSortBy,
 }) => {
-    const tabs: { id: UserAnime['stato'], label: string }[] = [
-        { id: 'WATCHING', label: 'In Corso' },
-        { id: 'PLANNING', label: 'Da Vedere' },
-        { id: 'COMPLETED', label: 'Completati' },
+    const tabs: { id: UserAnime['stato']; label: string }[] = [
+        { id: 'WATCHING', label: 'Watching' },
+        { id: 'PLANNING', label: 'To Watch' },
+        { id: 'COMPLETED', label: 'History' },
     ];
 
     return (
-        <div className="space-y-4 mb-8">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-                <div className="flex bg-slate-200/50 p-1 rounded-2xl backdrop-blur-sm self-start">
-                    {tabs.map((tab) => (
-                        <button
-                            key={tab.id}
-                            onClick={() => setCurrentTab(tab.id)}
-                            className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${currentTab === tab.id
-                                    ? 'bg-white text-blue-600 shadow-sm'
-                                    : 'text-slate-500 hover:text-slate-700'
-                                }`}
-                        >
-                            {tab.label}
-                        </button>
-                    ))}
-                </div>
-
-                <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Ordina:</span>
-                    <select
-                        value={sortBy}
-                        onChange={(e) => setSortBy(e.target.value as any)}
-                        className="bg-transparent text-sm font-semibold text-slate-600 outline-none cursor-pointer hover:text-blue-600 transition-colors"
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-12">
+            <div className="flex p-1.5 bg-slate-900 border border-white/5 rounded-2xl shadow-inner backdrop-blur-md">
+                {tabs.map(tab => (
+                    <button
+                        key={tab.id}
+                        onClick={() => setCurrentTab(tab.id)}
+                        className={cn(
+                            "relative px-8 py-3 text-sm font-bold transition-all duration-300 rounded-xl",
+                            currentTab === tab.id
+                                ? "text-white shadow-xl"
+                                : "text-slate-500 hover:text-slate-300"
+                        )}
                     >
-                        <option value="recent">Più recenti</option>
-                        <option value="oldest">Meno recenti</option>
-                        <option value="title">Titolo A-Z</option>
-                    </select>
-                </div>
+                        {currentTab === tab.id && (
+                            <motion.div
+                                layoutId="activeTab"
+                                className="absolute inset-0 bg-rose-600 rounded-xl -z-10 shadow-[0_0_20px_rgba(225,29,72,0.3)]"
+                                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                            />
+                        )}
+                        {tab.label}
+                    </button>
+                ))}
+            </div>
+
+            <div className="flex items-center gap-4 bg-slate-900/50 p-1.5 rounded-2xl border border-white/5">
+                <span className="text-xs font-black uppercase tracking-widest text-slate-500 ml-4">Sort by:</span>
+                <select
+                    value={sortBy}
+                    onChange={e => setSortBy(e.target.value as any)}
+                    className="bg-transparent text-white font-bold text-sm px-4 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500/50 cursor-pointer"
+                >
+                    <option value="recent">Recent</option>
+                    <option value="oldest">Oldest</option>
+                    <option value="title">A-Z Title</option>
+                </select>
             </div>
         </div>
     );

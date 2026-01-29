@@ -4,8 +4,9 @@ import { AnimeCard } from '../components/AnimeCard';
 import { AnimeFilters } from '../components/AnimeFilters';
 import { AddAnimeModal } from '../components/AddAnimeModal';
 import { type UserAnime } from '../db';
-import { Plus, LayoutGrid, Shuffle } from 'lucide-react';
+import { Plus, LayoutGrid, Shuffle, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Home: React.FC = () => {
     const [currentTab, setCurrentTab] = useState<UserAnime['stato']>('WATCHING');
@@ -26,61 +27,100 @@ const Home: React.FC = () => {
     };
 
     return (
-        <div className="max-w-6xl mx-auto px-4 py-8">
-            <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
-                <div>
-                    <h1 className="text-4xl font-extrabold text-slate-900 mb-2 bg-gradient-to-r from-blue-600 to-emerald-500 bg-clip-text text-transparent">
-                        Anime Tracker
+        <div className="max-w-7xl mx-auto px-6 py-12">
+            <motion.header
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16"
+            >
+                <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-rose-500 font-bold tracking-wider uppercase text-sm">
+                        <Sparkles size={16} />
+                        <span>Your personal collection</span>
+                    </div>
+                    <h1 className="text-5xl md:text-6xl font-black text-white tracking-tight">
+                        Anime<span className="text-rose-500">Tracker</span>
                     </h1>
-                    <p className="text-slate-500 font-medium">Tieni traccia del tuo progresso anime con facilità.</p>
+                    <p className="text-slate-400 text-lg max-w-md font-medium">
+                        Tieni traccia delle tue serie preferite con uno stile mozzafiato.
+                    </p>
                 </div>
 
-                <div className="flex gap-3">
+                <div className="flex items-center gap-4">
                     <Link
                         to="/random"
-                        className="flex items-center gap-2 px-6 py-3 bg-white text-slate-700 font-bold rounded-2xl border border-slate-200 hover:bg-slate-50 transition-all shadow-sm"
+                        className="group flex items-center gap-3 px-6 py-4 bg-slate-800/50 text-white font-bold rounded-2xl border border-slate-700/50 hover:bg-slate-700 transition-all shadow-xl backdrop-blur-sm"
                     >
-                        <Shuffle size={20} />
-                        Randomizer
+                        <Shuffle size={20} className="group-hover:rotate-180 transition-transform duration-500" />
+                        <span>Randomizer</span>
                     </Link>
                     <button
                         onClick={handleAdd}
-                        className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-200"
+                        className="flex items-center gap-3 px-8 py-4 bg-rose-600 text-white font-bold rounded-2xl hover:bg-rose-500 transition-all shadow-lg shadow-rose-900/20 active:scale-95 hover:scale-[1.02]"
                     >
-                        <Plus size={20} />
-                        Aggiungi
+                        <Plus size={22} strokeWidth={3} />
+                        <span>Aggiungi Anime</span>
                     </button>
                 </div>
-            </header>
+            </motion.header>
 
-            <AnimeFilters
-                currentTab={currentTab}
-                setCurrentTab={setCurrentTab}
-                sortBy={sortBy}
-                setSortBy={setSortBy}
-            />
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+            >
+                <AnimeFilters
+                    currentTab={currentTab}
+                    setCurrentTab={setCurrentTab}
+                    sortBy={sortBy}
+                    setSortBy={setSortBy}
+                />
+            </motion.div>
 
-            {animeList && animeList.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                    {animeList.map(anime => (
-                        <AnimeCard key={anime.id} anime={anime} onEdit={handleEdit} />
-                    ))}
-                </div>
-            ) : (
-                <div className="flex flex-col items-center justify-center py-24 text-center glass rounded-3xl border-2 border-dashed border-slate-200">
-                    <div className="bg-slate-100 p-4 rounded-full mb-4">
-                        <LayoutGrid size={48} className="text-slate-300" />
-                    </div>
-                    <h3 className="text-xl font-bold text-slate-700 mb-1">Nessun anime trovato</h3>
-                    <p className="text-slate-400">Inizia aggiungendo un nuovo anime alla tua lista!</p>
-                    <button
-                        onClick={handleAdd}
-                        className="mt-6 text-blue-600 font-bold hover:underline"
+            <AnimatePresence mode="popLayout">
+                {animeList && animeList.length > 0 ? (
+                    <motion.div
+                        layout
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
                     >
-                        Aggiungi ora
-                    </button>
-                </div>
-            )}
+                        {animeList.map((anime, index) => (
+                            <motion.div
+                                key={anime.id}
+                                layout
+                                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+                                transition={{
+                                    delay: Math.min(index * 0.05, 0.4),
+                                    duration: 0.4,
+                                    type: "spring",
+                                    stiffness: 100
+                                }}
+                            >
+                                <AnimeCard anime={anime} onEdit={handleEdit} />
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                ) : (
+                    <motion.div
+                        initial={{ opacity: 0, y: 40 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex flex-col items-center justify-center py-32 text-center glass rounded-[2rem]"
+                    >
+                        <div className="bg-rose-500/10 p-6 rounded-full mb-6 border border-rose-500/20">
+                            <LayoutGrid size={48} className="text-rose-500" />
+                        </div>
+                        <h3 className="text-2xl font-bold text-white mb-2">Nessun anime trovato</h3>
+                        <p className="text-slate-400 max-w-xs">Inizia a riempire la tua lista aggiungendo il tuo primo anime!</p>
+                        <button
+                            onClick={handleAdd}
+                            className="mt-8 px-6 py-3 bg-white text-slate-950 font-bold rounded-xl hover:bg-slate-100 transition-all active:scale-95"
+                        >
+                            Inizia ora
+                        </button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             <AddAnimeModal
                 isOpen={isModalOpen}

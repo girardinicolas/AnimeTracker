@@ -61,9 +61,12 @@ export const WheelSpinner: React.FC<WheelSpinnerProps> = ({ items, onResult }) =
             ctx.translate(center, center);
             ctx.rotate(startAngle + sliceAngle / 2);
             ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
             ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 12px Arial';
-            ctx.fillText(item.titolo.substring(0, 18) + (item.titolo.length > 18 ? '...' : ''), radius - 20, 5);
+            ctx.font = '900 14px "Inter", sans-serif';
+            ctx.shadowColor = 'rgba(0,0,0,0.5)';
+            ctx.shadowBlur = 4;
+            ctx.fillText(item.titolo.substring(0, 18) + (item.titolo.length > 18 ? '...' : ''), radius - 20, 0);
             ctx.restore();
         });
 
@@ -79,11 +82,14 @@ export const WheelSpinner: React.FC<WheelSpinnerProps> = ({ items, onResult }) =
         // Random winning index
         const winningIndex = Math.floor(Math.random() * items.length);
 
-        // Calculate rotation to land on the winner
-        // We need to rotate backwards because canvas draws clockwise 0 at 3 o'clock? 
-        // Actually, simpler logic: verify referencing pointer at top (270deg or -90deg)
+        // Calculate rotation to land on the winner at the TOP (270 degrees / -90 degrees in Canvas land)
+        // Canvas 0 is 3 o'clock. We want the winning slice to be at 12 o'clock.
+        // Rotation needed = 270 - CenterAngleOfWinner
+        // We add 360 * extraSpins for the effect.
 
-        const finalAngle = extraSpins * 360 + (360 - (winningIndex * segmentAngle) - (segmentAngle / 2));
+        const winningCenterAngle = (winningIndex * segmentAngle) + (segmentAngle / 2);
+        const targetRotation = 270 - winningCenterAngle;
+        const finalAngle = (extraSpins * 360) + targetRotation;
 
         setRotation(finalAngle);
 
@@ -105,13 +111,15 @@ export const WheelSpinner: React.FC<WheelSpinnerProps> = ({ items, onResult }) =
         <div className="flex flex-col items-center">
             <div className="relative w-80 h-80 mb-16 group">
                 {/* Pointer */}
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20 drop-shadow-lg">
-                    <div className="w-0 h-0 border-l-[15px] border-l-transparent border-t-[30px] border-t-white border-r-[15px] border-r-transparent"></div>
+                <div className="absolute -top-6 left-1/2 -translate-x-1/2 z-20 drop-shadow-xl filter drop-shadow-[0_4px_6px_rgba(0,0,0,0.3)]">
+                    <div className="w-8 h-12 bg-white clip-path-needle flex items-center justify-center transform translate-y-2">
+                        <div className="w-2 h-2 bg-rose-600 rounded-full mb-4" />
+                    </div>
                 </div>
 
                 {/* Spinning Canvas */}
                 <div
-                    className="w-full h-full rounded-full border-4 border-slate-800 shadow-2xl overflow-hidden transition-transform duration-[4000ms] cubic-bezier(0.2, 0.8, 0.2, 1)"
+                    className="w-full h-full rounded-full border-8 border-slate-800 shadow-[0_0_60px_rgba(0,0,0,0.6)] overflow-hidden transition-transform duration-[4000ms] cubic-bezier(0.15, 0.85, 0.35, 1)"
                     style={{ transform: `rotate(${rotation}deg)` }}
                 >
                     <canvas ref={canvasRef} className="w-full h-full" />

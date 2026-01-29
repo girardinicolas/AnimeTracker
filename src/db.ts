@@ -1,7 +1,6 @@
-import Dexie, { type Table } from 'dexie';
-
 export interface UserAnime {
     id?: number;
+    user_id?: string;
     titolo: string;
     immagine_url: string;
     episodi_totali: number;
@@ -9,18 +8,5 @@ export interface UserAnime {
     stagione: number;
     stato: 'WATCHING' | 'PLANNING' | 'COMPLETED';
     voto: number;
-    updated_at: Date;
+    updated_at: string | Date; // Supabase uses ISO strings
 }
-
-export class AnimeDatabase extends Dexie {
-    anime!: Table<UserAnime>;
-
-    constructor() {
-        super('AnimeTrackerDB');
-        this.version(3).stores({
-            anime: '++id, titolo, stato, voto, updated_at'
-        });
-    }
-}
-
-export const db = new AnimeDatabase();

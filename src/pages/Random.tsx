@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Sparkles, Trophy } from 'lucide-react';
 import { useAnime } from '../hooks/useAnime';
-import { WheelSpinner } from '../components/WheelSpinner';
+import { AnimeLottery } from '../components/AnimeLottery';
 import { type UserAnime } from '../db';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
@@ -43,7 +43,7 @@ const Random: React.FC = () => {
             </motion.div>
 
             <div className="w-full max-w-md flex flex-col items-center">
-                <WheelSpinner items={planningAnime || []} onResult={setWinner} />
+                <AnimeLottery items={planningAnime || []} onResult={setWinner} />
 
                 <AnimatePresence>
                     {winner && (

@@ -51,6 +51,8 @@ const translations = {
         loadingAuth: "Caricamento...",
         logout: "Esci",
         checkSpam: "Controlla anche la cartella spam per l'email di conferma!",
+        drawing: "Estrazione in corso...",
+        startExtraction: "Estrai Anime",
     },
     en: {
         subtitle: "Your personal collection",
@@ -100,6 +102,8 @@ const translations = {
         loadingAuth: "Loading...",
         logout: "Logout",
         checkSpam: "Also check your spam folder for the confirmation email!",
+        drawing: "Drawing...",
+        startExtraction: "Extract Anime",
     }
 };
 

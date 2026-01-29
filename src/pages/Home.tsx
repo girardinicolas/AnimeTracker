@@ -66,6 +66,15 @@ const Home: React.FC = () => {
                                 EN
                             </button>
                         </div>
+
+                        {/* Logout Button */}
+                        <button
+                            onClick={signOut}
+                            className="p-2.5 bg-slate-800/50 rounded-lg border border-white/5 text-slate-500 hover:text-rose-500 transition-all active:scale-90"
+                            title={t('logout')}
+                        >
+                            <LogOut size={16} />
+                        </button>
                     </div>
 
                     <h1 className="text-5xl md:text-6xl font-black text-white tracking-tight">

@@ -60,23 +60,35 @@ export function useAnime(stato?: UserAnime['stato'], sortBy: 'recent' | 'oldest'
 export const animeActions = {
     add: async (anime: Omit<UserAnime, 'id' | 'updated_at'>) => {
         const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
+        if (!user) {
+            console.error("User not found during add");
+            return;
+        }
 
-        return await supabase
+        const { error } = await supabase
             .from('anime')
             .insert({ ...anime, user_id: user.id });
+
+        if (error) console.error("Supabase Add Error:", error.message, error.details);
+        return { error };
     },
     update: async (id: number, anime: Partial<UserAnime>) => {
-        return await supabase
+        const { error } = await supabase
             .from('anime')
             .update({ ...anime, updated_at: new Date().toISOString() })
             .eq('id', id);
+
+        if (error) console.error("Supabase Update Error:", error.message, error.details);
+        return { error };
     },
     delete: async (id: number) => {
-        return await supabase
+        const { error } = await supabase
             .from('anime')
             .delete()
             .eq('id', id);
+
+        if (error) console.error("Supabase Delete Error:", error.message, error.details);
+        return { error };
     },
     incrementProgress: async (anime: UserAnime) => {
         if (anime.id && anime.episodio_corrente < anime.episodi_totali) {
@@ -89,7 +101,7 @@ export const animeActions = {
                 nextStato = 'WATCHING';
             }
 
-            return await supabase
+            const { error } = await supabase
                 .from('anime')
                 .update({
                     episodio_corrente: nextEp,
@@ -97,6 +109,9 @@ export const animeActions = {
                     updated_at: new Date().toISOString()
                 })
                 .eq('id', anime.id);
+
+            if (error) console.error("Supabase Increment Error:", error.message, error.details);
+            return { error };
         }
     }
 };

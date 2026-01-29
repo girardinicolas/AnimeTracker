@@ -7,7 +7,7 @@
 
 AnimeTracker è una web app moderna, veloce e "passionale" progettata per tenere traccia dei tuoi progressi negli anime. Caratterizzata da un design premium dark-rose e animazioni fluide, offre un'esperienza utente raffinata sia su desktop che su mobile.
 
-![Anime Tracker Logo](/public/logo.png)
+![Anime Tracker Logo](public/logo.png)
 
 ## 🌐 Accesso Rapido & Mobile
 

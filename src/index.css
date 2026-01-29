@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #3b82f6;
+  --secondary: #10b981;
+  --warning: #f59e0b;
+}
+
+body {
+  background-color: #f8fafc;
+  color: #0f172a;
+  min-height: 100vh;
+}
+
+@keyframes wheel-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.wheel-spinning {
+  animation: wheel-rotate 3s cubic-bezier(0.15, 0, 0.15, 1) forwards;
+}
+
+/* Custom glass effect since @apply might be tricky in some mixed CSS environments in early v4 */
+.glass {
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}

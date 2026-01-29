@@ -4,7 +4,7 @@ import { animeActions } from '../hooks/useAnime';
 import { X, Trash2, Save, Sparkles, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
-import { fetchAnimeLogo } from '../lib/api';
+import { fetchAnimeLogo, searchAnime, type AnimeMetadata } from '../lib/api';
 import { useLanguage } from '../context/LanguageContext';
 
 interface AddAnimeModalProps {
@@ -16,6 +16,7 @@ interface AddAnimeModalProps {
 export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, editAnime }) => {
     const { t } = useLanguage();
     const [isLoadingMetadata, setIsLoadingMetadata] = useState(false);
+    const [suggestions, setSuggestions] = useState<AnimeMetadata[]>([]);
     const [formData, setFormData] = useState<Omit<UserAnime, 'id' | 'updated_at'>>({
         titolo: '',
         immagine_url: '',
@@ -48,21 +49,42 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
                 voto: 0,
             });
         }
+        setSuggestions([]);
     }, [editAnime, isOpen]);
+
+    // Handle debounced search for suggestions
+    useEffect(() => {
+        if (editAnime) return; // Don't suggest when editing
+
+        const timer = setTimeout(async () => {
+            if (formData.titolo.trim().length >= 3) {
+                const results = await searchAnime(formData.titolo);
+                setSuggestions(results);
+            } else {
+                setSuggestions([]);
+            }
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [formData.titolo, editAnime]);
+
+    const handleSelectSuggestion = (anime: AnimeMetadata) => {
+        setFormData(prev => ({
+            ...prev,
+            titolo: anime.titolo,
+            immagine_url: anime.immagine_url,
+            episodi_totali: anime.episodi_totali,
+            voto: anime.voto,
+        }));
+        setSuggestions([]);
+    };
 
     const handleMagicFetch = async () => {
         if (!formData.titolo) return;
         setIsLoadingMetadata(true);
         const metadata = await fetchAnimeLogo(formData.titolo);
         if (metadata) {
-            setFormData(prev => ({
-                ...prev,
-                immagine_url: metadata.immagine_url,
-                episodi_totali: prev.episodi_totali === 12 || prev.episodi_totali === 0
-                    ? metadata.episodi_totali
-                    : prev.episodi_totali,
-                voto: metadata.voto,
-            }));
+            handleSelectSuggestion(metadata);
         }
         setIsLoadingMetadata(false);
     };
@@ -143,16 +165,56 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
                         </div>
 
                         <form onSubmit={handleSubmit} className="p-8 space-y-6">
-                            <div className="space-y-2">
+                            <div className="space-y-2 relative">
                                 <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Title</label>
-                                <input
-                                    type="text"
-                                    required
-                                    className="w-full px-6 py-4 bg-slate-800/50 border border-white/5 rounded-2xl text-white placeholder:text-slate-600 focus:ring-2 focus:ring-rose-500/50 focus:border-rose-500/50 outline-none transition-all font-medium"
-                                    value={formData.titolo}
-                                    onChange={(e) => setFormData({ ...formData, titolo: e.target.value })}
-                                    placeholder="e.g. Neon Genesis Evangelion"
-                                />
+                                <div className="relative group/input">
+                                    <input
+                                        type="text"
+                                        required
+                                        className="w-full px-6 py-4 bg-slate-800/50 border border-white/5 rounded-2xl text-white placeholder:text-slate-600 focus:ring-2 focus:ring-rose-500/50 focus:border-rose-500/50 outline-none transition-all font-medium"
+                                        value={formData.titolo}
+                                        onChange={(e) => setFormData({ ...formData, titolo: e.target.value })}
+                                        placeholder="e.g. Neon Genesis Evangelion"
+                                        autoComplete="off"
+                                    />
+
+                                    {/* Suggestions Dropdown */}
+                                    <AnimatePresence>
+                                        {suggestions.length > 0 && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                exit={{ opacity: 0, scale: 0.95 }}
+                                                className="absolute left-0 right-0 top-full mt-2 bg-slate-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-[110] backdrop-blur-xl"
+                                            >
+                                                <div className="p-1 space-y-1">
+                                                    {suggestions.map((anime, idx) => (
+                                                        <button
+                                                            key={idx}
+                                                            type="button"
+                                                            onClick={() => handleSelectSuggestion(anime)}
+                                                            className="w-full flex items-center gap-3 p-2 hover:bg-white/5 transition-all text-left group"
+                                                        >
+                                                            <img
+                                                                src={anime.immagine_url}
+                                                                alt={anime.titolo}
+                                                                className="w-10 h-14 object-cover rounded-lg flex-shrink-0"
+                                                            />
+                                                            <div className="flex-grow">
+                                                                <p className="text-sm font-bold text-white line-clamp-1 group-hover:text-rose-400">
+                                                                    {anime.titolo}
+                                                                </p>
+                                                                <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest mt-0.5">
+                                                                    {anime.episodi_totali > 0 ? `${anime.episodi_totali} Eps` : 'Unknown Eps'} • MAL: {anime.voto > 0 ? anime.voto : 'N/A'}
+                                                                </p>
+                                                            </div>
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </div>
                             </div>
 
                             <div className="space-y-2 relative">

@@ -2,6 +2,7 @@ export interface AnimeMetadata {
     titolo: string;
     immagine_url: string;
     episodi_totali: number;
+    voto: number;
 }
 
 export async function fetchAnimeLogo(title: string): Promise<AnimeMetadata | null> {
@@ -17,6 +18,7 @@ export async function fetchAnimeLogo(title: string): Promise<AnimeMetadata | nul
                 titolo: anime.title,
                 immagine_url: anime.images.webp.large_image_url || anime.images.jpg.large_image_url,
                 episodi_totali: anime.episodes || 0,
+                voto: anime.score || 0,
             };
         }
     } catch (error) {

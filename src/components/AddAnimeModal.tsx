@@ -23,6 +23,7 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
         episodio_corrente: 0,
         stagione: 1,
         stato: 'PLANNING',
+        voto: 0,
     });
 
     useEffect(() => {
@@ -34,6 +35,7 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
                 episodio_corrente: editAnime.episodio_corrente,
                 stagione: editAnime.stagione || 1,
                 stato: editAnime.stato,
+                voto: editAnime.voto || 0,
             });
         } else {
             setFormData({
@@ -43,6 +45,7 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
                 episodio_corrente: 0,
                 stagione: 1,
                 stato: 'PLANNING',
+                voto: 0,
             });
         }
     }, [editAnime, isOpen]);
@@ -58,6 +61,7 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
                 episodi_totali: prev.episodi_totali === 12 || prev.episodi_totali === 0
                     ? metadata.episodi_totali
                     : prev.episodi_totali,
+                voto: metadata.voto,
             }));
         }
         setIsLoadingMetadata(false);
@@ -72,6 +76,7 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
             const metadata = await fetchAnimeLogo(currentData.titolo);
             if (metadata) {
                 currentData.immagine_url = metadata.immagine_url;
+                currentData.voto = metadata.voto;
                 if (currentData.episodi_totali === 12 || currentData.episodi_totali === 0) {
                     currentData.episodi_totali = metadata.episodi_totali;
                 }

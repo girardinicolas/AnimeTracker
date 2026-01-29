@@ -60,10 +60,12 @@ export const AnimeCard: React.FC<AnimeCardProps> = ({ anime, onEdit }) => {
                     </span>
                 </div>
 
-                {/* Rating Badge (Simulated or from DB if available) */}
+                {/* Rating Badge */}
                 <div className="absolute top-4 right-4 bg-slate-950/60 backdrop-blur-md border border-white/10 px-2 py-1.5 rounded-xl flex items-center gap-1">
                     <Star size={12} className="text-amber-400 fill-amber-400" />
-                    <span className="text-[10px] font-bold text-white">4.8</span>
+                    <span className="text-[10px] font-bold text-white">
+                        {anime.voto && anime.voto > 0 ? anime.voto.toFixed(1) : 'N/A'}
+                    </span>
                 </div>
             </div>
 

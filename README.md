@@ -5,9 +5,15 @@
 [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Dexie](https://img.shields.io/badge/Dexie.js-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://dexie.org/)
 
-AnimeTracker è una web app moderna, veloce e "passionale" progettata per tenere traccia dei tuoi progressi negli anime. Caratterizzata da un design premium dark-rose e animazioni fluide, offre un'esperienza utente raffinata sia su desktop che su mobile.
-
 ![Anime Tracker Logo](public/logo.png)
+
+## 💡 Perché AnimeTracker?
+
+Ti è mai capitato di seguire 5, 10 o addirittura 15 anime contemporaneamente ogni stagione? Tra simulcast settimanali e serie recuperate, è facilissimo perdere il conto: *"Ma ero all'episodio 7 o all'8?"*.
+
+L'idea di **AnimeTracker** è nata proprio da questa necessità personale. Volevo uno strumento che fosse **immediato, senza fronzoli e bellissimo da vedere**, che mi permettesse di segnare il progresso in un secondo, senza dover navigare tra mille menu o caricamenti infiniti.
+
+Se sei un amante degli anime che vive di pane e stagionali, questa app è stata pensata proprio per te. Provala, installala sul tuo telefono e non perdere mai più un colpo! 🏯✨
 
 ## 🌐 Accesso Rapido & Mobile
 

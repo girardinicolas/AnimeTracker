@@ -7,8 +7,10 @@ import { type UserAnime } from '../db';
 import { Plus, LayoutGrid, Shuffle, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
 
 const Home: React.FC = () => {
+    const { language, setLanguage, t } = useLanguage();
     const [currentTab, setCurrentTab] = useState<UserAnime['stato']>('WATCHING');
     const [sortBy, setSortBy] = useState<'recent' | 'oldest' | 'title'>('recent');
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,16 +35,41 @@ const Home: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16"
             >
-                <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-rose-500 font-bold tracking-wider uppercase text-sm">
-                        <Sparkles size={16} />
-                        <span>Your personal collection</span>
+                <div className="space-y-4">
+                    <div className="flex items-center justify-between md:justify-start gap-6">
+                        <div className="flex items-center gap-2 text-rose-500 font-bold tracking-wider uppercase text-sm">
+                            <Sparkles size={16} />
+                            <span>{t('subtitle')}</span>
+                        </div>
+
+                        {/* Language Switcher */}
+                        <div className="flex bg-slate-800/50 rounded-lg p-1 border border-white/5 backdrop-blur-sm">
+                            <button
+                                onClick={() => setLanguage('it')}
+                                className={cn(
+                                    "px-2 py-1 text-[10px] font-black rounded-md transition-all",
+                                    language === 'it' ? "bg-rose-600 text-white shadow-lg shadow-rose-900/40" : "text-slate-500 hover:text-slate-300"
+                                )}
+                            >
+                                IT
+                            </button>
+                            <button
+                                onClick={() => setLanguage('en')}
+                                className={cn(
+                                    "px-2 py-1 text-[10px] font-black rounded-md transition-all",
+                                    language === 'en' ? "bg-rose-600 text-white shadow-lg shadow-rose-900/40" : "text-slate-500 hover:text-slate-300"
+                                )}
+                            >
+                                EN
+                            </button>
+                        </div>
                     </div>
+
                     <h1 className="text-5xl md:text-6xl font-black text-white tracking-tight">
                         Anime<span className="text-rose-500">Tracker</span>
                     </h1>
                     <p className="text-slate-400 text-lg max-w-md font-medium">
-                        Tieni traccia delle tue serie preferite con uno stile mozzafiato.
+                        {t('description')}
                     </p>
                 </div>
 
@@ -52,14 +79,14 @@ const Home: React.FC = () => {
                         className="group flex items-center gap-3 px-6 py-4 bg-slate-800/50 text-white font-bold rounded-2xl border border-slate-700/50 hover:bg-slate-700 transition-all shadow-xl backdrop-blur-sm"
                     >
                         <Shuffle size={20} className="group-hover:rotate-180 transition-transform duration-500" />
-                        <span>Randomizer</span>
+                        <span>{t('randomizer')}</span>
                     </Link>
                     <button
                         onClick={handleAdd}
                         className="flex items-center gap-3 px-8 py-4 bg-rose-600 text-white font-bold rounded-2xl hover:bg-rose-500 transition-all shadow-lg shadow-rose-900/20 active:scale-95 hover:scale-[1.02]"
                     >
                         <Plus size={22} strokeWidth={3} />
-                        <span>Aggiungi Anime</span>
+                        <span>{t('addAnime')}</span>
                     </button>
                 </div>
             </motion.header>
@@ -110,13 +137,13 @@ const Home: React.FC = () => {
                         <div className="bg-rose-500/10 p-6 rounded-full mb-6 border border-rose-500/20">
                             <LayoutGrid size={48} className="text-rose-500" />
                         </div>
-                        <h3 className="text-2xl font-bold text-white mb-2">Nessun anime trovato</h3>
-                        <p className="text-slate-400 max-w-xs">Inizia a riempire la tua lista aggiungendo il tuo primo anime!</p>
+                        <h3 className="text-2xl font-bold text-white mb-2">{t('noAnime')}</h3>
+                        <p className="text-slate-400 max-w-xs">{t('startAdding')}</p>
                         <button
                             onClick={handleAdd}
                             className="mt-8 px-6 py-3 bg-white text-slate-950 font-bold rounded-xl hover:bg-slate-100 transition-all active:scale-95"
                         >
-                            Inizia ora
+                            {t('startNow')}
                         </button>
                     </motion.div>
                 )}
@@ -130,5 +157,9 @@ const Home: React.FC = () => {
         </div>
     );
 };
+
+// Internal utility since imports can be tricky in this environment if not careful, 
+// using the one from lib/utils instead for consistency
+import { cn } from '../lib/utils';
 
 export default Home;

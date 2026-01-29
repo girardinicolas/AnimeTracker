@@ -5,6 +5,7 @@ import { X, Trash2, Save, Sparkles, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
 import { fetchAnimeLogo } from '../lib/api';
+import { useLanguage } from '../context/LanguageContext';
 
 interface AddAnimeModalProps {
     isOpen: boolean;
@@ -13,6 +14,7 @@ interface AddAnimeModalProps {
 }
 
 export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, editAnime }) => {
+    const { t } = useLanguage();
     const [isLoadingMetadata, setIsLoadingMetadata] = useState(false);
     const [formData, setFormData] = useState<Omit<UserAnime, 'id' | 'updated_at'>>({
         titolo: '',
@@ -85,7 +87,7 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
     };
 
     const handleDelete = async () => {
-        if (editAnime?.id && window.confirm('Sei sicuro di voler eliminare questo anime?')) {
+        if (editAnime?.id && window.confirm(t('deleteConfirm'))) {
             await animeActions.delete(editAnime.id);
             onClose();
         }
@@ -111,10 +113,10 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
                         <div className="px-8 py-6 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
                             <div>
                                 <h2 className="text-2xl font-black text-white">
-                                    {editAnime ? 'Edit Series' : 'New Anime'}
+                                    {editAnime ? t('editSeries') : t('newAnime')}
                                 </h2>
                                 <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mt-1">
-                                    {editAnime ? 'Update your progress' : 'Add to your collection'}
+                                    {editAnime ? t('updateProgress') : t('addToCollection')}
                                 </p>
                             </div>
                             <button
@@ -153,7 +155,7 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
                                         onClick={handleMagicFetch}
                                         disabled={isLoadingMetadata || !formData.titolo}
                                         className="absolute right-2 top-1/2 -translate-y-1/2 p-3 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-xl transition-all disabled:opacity-30 disabled:grayscale"
-                                        title="Sincronizza con MAL"
+                                        title={t('syncMal')}
                                     >
                                         {isLoadingMetadata ? (
                                             <Loader2 size={20} className="animate-spin" />
@@ -166,7 +168,7 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
 
                             <div className="grid grid-cols-3 gap-6">
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1 text-[10px]">Season</label>
+                                    <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1 text-[10px]">{t('season')}</label>
                                     <input
                                         type="number"
                                         min="1"
@@ -176,7 +178,7 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1 text-[10px]">Current Ep</label>
+                                    <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1 text-[10px]">{t('currentEp')}</label>
                                     <input
                                         type="number"
                                         min="0"
@@ -186,7 +188,7 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1 text-[10px]">Total Ep</label>
+                                    <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1 text-[10px]">{t('totalEp')}</label>
                                     <input
                                         type="number"
                                         min="1"
@@ -198,7 +200,7 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Status</label>
+                                <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">{t('status')}</label>
                                 <div className="grid grid-cols-3 gap-3">
                                     {(['PLANNING', 'WATCHING', 'COMPLETED'] as const).map((s) => (
                                         <button
@@ -208,11 +210,11 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
                                             className={cn(
                                                 "py-3 rounded-xl text-[10px] font-black uppercase tracking-tighter border transition-all",
                                                 formData.stato === s
-                                                    ? "bg-rose-600 border-rose-500 text-white shadow-lg shadow-rose-900/20"
+                                                    ? "bg-rose-600 border-rose-500 text-white shadow-lg shadow-rose-900/40"
                                                     : "bg-slate-800/50 border-white/5 text-slate-400 hover:text-white"
                                             )}
                                         >
-                                            {s === 'PLANNING' ? 'Planned' : s === 'WATCHING' ? 'Watching' : 'Finished'}
+                                            {s === 'PLANNING' ? t('planned') : s === 'WATCHING' ? t('watching') : t('history')}
                                         </button>
                                     ))}
                                 </div>
@@ -230,10 +232,10 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
                                 )}
                                 <button
                                     type="submit"
-                                    className="flex-1 py-4 bg-rose-600 hover:bg-rose-500 text-white font-black rounded-2xl shadow-xl shadow-rose-900/20 transition-all active:scale-95 flex items-center justify-center gap-3"
+                                    className="flex-1 py-4 bg-rose-600 hover:bg-rose-500 text-white font-black rounded-2xl shadow-xl shadow-rose-900/40 transition-all active:scale-95 flex items-center justify-center gap-3"
                                 >
                                     <Save size={20} strokeWidth={3} />
-                                    <span>{editAnime ? 'Save Changes' : 'Add to Collection'}</span>
+                                    <span>{editAnime ? t('saveChanges') : t('addToCollection')}</span>
                                 </button>
                             </div>
                         </form>

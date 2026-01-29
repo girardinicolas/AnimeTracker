@@ -4,6 +4,7 @@ import { animeActions } from '../hooks/useAnime';
 import { Plus, Edit2, Play, CheckCircle, Clock, Star } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
 
 interface AnimeCardProps {
     anime: UserAnime;
@@ -11,6 +12,7 @@ interface AnimeCardProps {
 }
 
 export const AnimeCard: React.FC<AnimeCardProps> = ({ anime, onEdit }) => {
+    const { t } = useLanguage();
     const progress = Math.round((anime.episodio_corrente / anime.episodi_totali) * 100);
 
     const statusColors = {
@@ -26,9 +28,9 @@ export const AnimeCard: React.FC<AnimeCardProps> = ({ anime, onEdit }) => {
     };
 
     const statusLabels = {
-        WATCHING: 'Watching',
-        PLANNING: 'Planned',
-        COMPLETED: 'Finished',
+        WATCHING: t('watching'),
+        PLANNING: t('planned'),
+        COMPLETED: t('history'),
     };
 
     return (
@@ -101,7 +103,7 @@ export const AnimeCard: React.FC<AnimeCardProps> = ({ anime, onEdit }) => {
                             className="flex-[2] bg-rose-600 hover:bg-rose-500 disabled:opacity-20 disabled:grayscale text-white py-3 rounded-2xl flex items-center justify-center gap-2 font-bold transition-all active:scale-95 shadow-xl shadow-rose-900/20"
                         >
                             <Plus size={18} strokeWidth={3} />
-                            <span>Episodio</span>
+                            <span>{t('episodio')}</span>
                         </button>
                         <button
                             onClick={(e) => {

@@ -5,8 +5,10 @@ import { useAnime } from '../hooks/useAnime';
 import { WheelSpinner } from '../components/WheelSpinner';
 import { type UserAnime } from '../db';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
 
 const Random: React.FC = () => {
+    const { t } = useLanguage();
     const planningAnime = useAnime('PLANNING');
     const [winner, setWinner] = useState<UserAnime | null>(null);
 
@@ -19,11 +21,11 @@ const Random: React.FC = () => {
             >
                 <Link to="/" className="group flex items-center gap-2 text-slate-400 hover:text-white transition-all font-bold uppercase tracking-widest text-xs">
                     <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-                    <span>Back Home</span>
+                    <span>{t('backHome')}</span>
                 </Link>
                 <div className="flex items-center gap-2 bg-rose-500/10 text-rose-500 px-6 py-2.5 rounded-full font-black border border-rose-500/20 shadow-[0_0_20px_rgba(225,29,72,0.1)] text-xs uppercase tracking-widest">
                     <Sparkles size={16} />
-                    Lucky Spin
+                    {t('luckySpin')}
                 </div>
             </motion.div>
 
@@ -33,10 +35,10 @@ const Random: React.FC = () => {
                 className="text-center mb-16 space-y-4"
             >
                 <h1 className="text-5xl md:text-6xl font-black text-white leading-tight">
-                    Cosa guardiamo <span className="text-rose-500">stasera?</span>
+                    {t('whatToWatch').split('?')[0]} <span className="text-rose-500">?</span>
                 </h1>
                 <p className="text-slate-400 max-w-md mx-auto text-lg font-medium">
-                    Gira la ruota e lascia che il destino scelga il prossimo capolavoro dalla tua lista.
+                    {t('spinDescription')}
                 </p>
             </motion.div>
 
@@ -57,14 +59,14 @@ const Random: React.FC = () => {
 
                                 <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-rose-500/10 text-rose-500 rounded-full text-[10px] font-black uppercase tracking-widest border border-rose-500/20 mb-6">
                                     <Trophy size={14} />
-                                    The Winner is...
+                                    {t('winner')}
                                 </div>
                                 <h2 className="text-4xl font-black text-white mb-8 leading-tight">{winner.titolo}</h2>
                                 <Link
                                     to="/"
                                     className="inline-flex px-10 py-4 bg-rose-600 text-white font-black rounded-2xl hover:bg-rose-500 transition-all shadow-xl shadow-rose-900/40 active:scale-95 text-lg"
                                 >
-                                    Inizia ora
+                                    {t('startWatching')}
                                 </Link>
                             </div>
                         </motion.div>

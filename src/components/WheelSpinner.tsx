@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { type UserAnime } from '../db';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
 
 interface WheelSpinnerProps {
     items: UserAnime[];
@@ -8,6 +9,7 @@ interface WheelSpinnerProps {
 }
 
 export const WheelSpinner: React.FC<WheelSpinnerProps> = ({ items, onResult }) => {
+    const { t } = useLanguage();
     const [isSpinning, setIsSpinning] = useState(false);
     const [rotation, setRotation] = useState(0);
     const wheelRef = useRef<HTMLDivElement>(null);
@@ -34,7 +36,7 @@ export const WheelSpinner: React.FC<WheelSpinnerProps> = ({ items, onResult }) =
                 animate={{ opacity: 1 }}
                 className="text-center p-12 bg-slate-900 border border-white/5 rounded-3xl"
             >
-                <p className="text-slate-500 italic font-medium">Add some anime to your "To Watch" list to spin the wheel!</p>
+                <p className="text-slate-500 italic font-medium">{t('addSomeAnime')}</p>
             </motion.div>
         );
     }
@@ -116,11 +118,10 @@ export const WheelSpinner: React.FC<WheelSpinnerProps> = ({ items, onResult }) =
                 disabled={isSpinning}
                 className="group relative px-14 py-5 bg-white text-slate-950 rounded-[2rem] font-black text-xl hover:bg-rose-50 transition-all shadow-2xl shadow-rose-900/10 disabled:opacity-50 disabled:grayscale overflow-hidden"
             >
-                <span className="relative z-10">{isSpinning ? 'SPINNING...' : 'SPIN THE WHEEL'}</span>
+                <span className="relative z-10">{isSpinning ? t('spinning') : t('spinTheWheel')}</span>
                 {/* Border glow on hover */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-r from-rose-500/20 to-amber-500/20" />
             </motion.button>
         </div>
     );
 };
-

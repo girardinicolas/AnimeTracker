@@ -90,8 +90,8 @@ const Home: React.FC = () => {
                         to="/random"
                         className="group flex items-center gap-3 px-6 py-4 bg-slate-800/50 text-white font-bold rounded-2xl border border-slate-700/50 hover:bg-slate-700 transition-all shadow-xl backdrop-blur-sm"
                     >
-                        <Shuffle size={20} className="group-hover:rotate-180 transition-transform duration-500" />
-                        <span>{t('randomizer')}</span>
+                        <Zap size={20} className="group-hover:text-amber-400 transition-colors duration-300" />
+                        <span>{t('extractAnime')}</span>
                     </Link>
                     <button
                         onClick={handleAdd}

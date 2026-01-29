@@ -24,8 +24,8 @@ const Random: React.FC = () => {
                     <span>{t('backHome')}</span>
                 </Link>
                 <div className="flex items-center gap-2 bg-rose-500/10 text-rose-500 px-6 py-2.5 rounded-full font-black border border-rose-500/20 shadow-[0_0_20px_rgba(225,29,72,0.1)] text-xs uppercase tracking-widest">
-                    <Sparkles size={16} />
-                    {t('luckySpin')}
+                    <Trophy size={16} />
+                    {t('animeLottery')}
                 </div>
             </motion.div>
 

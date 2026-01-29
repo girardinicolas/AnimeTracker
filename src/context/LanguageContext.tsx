@@ -53,6 +53,8 @@ const translations = {
         checkSpam: "Controlla anche la cartella spam per l'email di conferma!",
         drawing: "Estrazione in corso...",
         startExtraction: "Estrai Anime",
+        animeLottery: "Lotteria Anime",
+        extractAnime: "Estrai",
     },
     en: {
         subtitle: "Your personal collection",
@@ -104,6 +106,8 @@ const translations = {
         checkSpam: "Also check your spam folder for the confirmation email!",
         drawing: "Drawing...",
         startExtraction: "Extract Anime",
+        animeLottery: "Anime Lottery",
+        extractAnime: "Extract",
     }
 };
 

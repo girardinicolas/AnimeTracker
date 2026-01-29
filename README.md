@@ -11,9 +11,11 @@ AnimeTracker è una web app moderna, veloce e "passionale" progettata per tenere
 
 ## 🌐 Accesso Rapido & Mobile
 
-Non è necessario scaricare nulla sul tuo PC! AnimeTracker è una **PWA (Progressive Web App)** accessibile via browser.
+Non è necessario scaricare nulla sul tuo PC! AnimeTracker è una **PWA (Progressive Web App)** accessibile cliccando il link qui sotto:
 
-1. **Apri il Link**: Accedi all'URL fornito (es. su Netlify).
+🚀 **[Vai all'App Online](https://kaleidoscopic-mermaid-bde0d1.netlify.app/)**
+
+1. **Apri il Link**: Accedi all'URL sopra dal tuo browser.
 2. **Installa su Mobile**: 
    - **Android**: Clicca sui tre puntini e seleziona "Installa App".
    - **iOS**: Clicca sul tasto "Condividi" e seleziona "Aggiungi alla Home".

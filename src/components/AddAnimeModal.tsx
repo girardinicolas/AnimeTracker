@@ -166,9 +166,9 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-3 gap-6">
+                            <div className="grid grid-cols-3 gap-4">
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1 text-[10px]">{t('season')}</label>
+                                    <label className="block h-4 text-xs font-black text-slate-500 uppercase tracking-widest ml-1 text-[10px] leading-none">{t('season')}</label>
                                     <input
                                         type="number"
                                         min="1"
@@ -178,7 +178,7 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1 text-[10px]">{t('currentEp')}</label>
+                                    <label className="block h-4 text-xs font-black text-slate-500 uppercase tracking-widest ml-1 text-[10px] leading-none">{t('currentEp')}</label>
                                     <input
                                         type="number"
                                         min="0"
@@ -188,7 +188,7 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1 text-[10px]">{t('totalEp')}</label>
+                                    <label className="block h-4 text-xs font-black text-slate-500 uppercase tracking-widest ml-1 text-[10px] leading-none">{t('totalEp')}</label>
                                     <input
                                         type="number"
                                         min="1"

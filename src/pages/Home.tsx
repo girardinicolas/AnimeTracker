@@ -4,8 +4,7 @@ import { AnimeCard } from '../components/AnimeCard';
 import { AnimeFilters } from '../components/AnimeFilters';
 import { AddAnimeModal } from '../components/AddAnimeModal';
 import { type UserAnime } from '../db';
-import { Plus, LayoutGrid, Shuffle, Sparkles } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Plus, LayoutGrid, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
@@ -86,13 +85,6 @@ const Home: React.FC = () => {
                 </div>
 
                 <div className="flex items-center gap-4">
-                    <Link
-                        to="/random"
-                        className="group flex items-center gap-3 px-6 py-4 bg-slate-800/50 text-white font-bold rounded-2xl border border-slate-700/50 hover:bg-slate-700 transition-all shadow-xl backdrop-blur-sm"
-                    >
-                        <Zap size={20} className="group-hover:text-amber-400 transition-colors duration-300" />
-                        <span>{t('extractAnime')}</span>
-                    </Link>
                     <button
                         onClick={handleAdd}
                         className="flex items-center gap-3 px-8 py-4 bg-rose-600 text-white font-bold rounded-2xl hover:bg-rose-500 transition-all shadow-lg shadow-rose-900/20 active:scale-95 hover:scale-[1.02]"

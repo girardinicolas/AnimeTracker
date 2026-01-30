@@ -1,6 +1,5 @@
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
-import Random from './pages/Random';
 import Auth from './pages/Auth';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -31,7 +30,6 @@ const AppContent = () => {
       <main className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/random" element={<Random />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

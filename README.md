@@ -32,7 +32,6 @@ Non è necessario scaricare nulla! AnimeTracker è una **PWA (Progressive Web Ap
 - **🚀 Performance Estreme**: Sviluppata con Vite e React per un caricamento istantaneo.
 - **🪄 Magic Autocomplete**: Suggerimenti in tempo reale mentre scrivi il titolo, con recupero automatico di poster e info.
 - **⭐ Official Ratings**: Voti ufficiali presi direttamente da MyAnimeList.
-- **⚡ Anime Gacha Lottery**: Un sistema di estrazione stile "Gacha" per scegliere il prossimo anime con un'animazione adrenalinica.
 - **🌍 Multi-lingua**: Supporto completo per Italiano e Inglese.
 - **📅 Season Tracking**: Tieni traccia della stagione specifica che stai guardando.
 - **🤖 Smart Flow**: Gli anime si spostano automaticamente tra le categorie in base al tuo progresso.

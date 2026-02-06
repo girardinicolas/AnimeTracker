@@ -18,7 +18,7 @@ const Home: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingAnime, setEditingAnime] = useState<UserAnime | null>(null);
 
-    const animeList = useAnime(currentTab, sortBy);
+    const { animeList, actions } = useAnime(currentTab, sortBy);
 
     const handleEdit = (anime: UserAnime) => {
         setEditingAnime(anime);
@@ -128,7 +128,11 @@ const Home: React.FC = () => {
                                     stiffness: 100
                                 }}
                             >
-                                <AnimeCard anime={anime} onEdit={handleEdit} />
+                                <AnimeCard
+                                    anime={anime}
+                                    onEdit={handleEdit}
+                                    onIncrement={() => actions.incrementProgress(anime)}
+                                />
                             </motion.div>
                         ))}
                     </motion.div>
@@ -172,6 +176,7 @@ const Home: React.FC = () => {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 editAnime={editingAnime}
+                onSuccess={() => { }} // Actions inside hook now handle refresh
             />
         </div>
     );

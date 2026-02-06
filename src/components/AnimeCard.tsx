@@ -1,6 +1,5 @@
 import React from 'react';
 import { type UserAnime } from '../db';
-import { animeActions } from '../hooks/useAnime';
 import { Plus, Edit2, Play, CheckCircle, Clock, Star } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { motion } from 'framer-motion';
@@ -9,9 +8,10 @@ import { useLanguage } from '../context/LanguageContext';
 interface AnimeCardProps {
     anime: UserAnime;
     onEdit: (anime: UserAnime) => void;
+    onIncrement?: () => void;
 }
 
-export const AnimeCard: React.FC<AnimeCardProps> = ({ anime, onEdit }) => {
+export const AnimeCard: React.FC<AnimeCardProps> = ({ anime, onEdit, onIncrement }) => {
     const { t } = useLanguage();
     const progress = Math.round((anime.episodio_corrente / anime.episodi_totali) * 100);
 
@@ -99,7 +99,7 @@ export const AnimeCard: React.FC<AnimeCardProps> = ({ anime, onEdit }) => {
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
-                                animeActions.incrementProgress(anime);
+                                onIncrement?.();
                             }}
                             disabled={anime.episodio_corrente >= anime.episodi_totali}
                             className="flex-[2] bg-rose-600 hover:bg-rose-500 disabled:opacity-20 disabled:grayscale text-white py-3 rounded-2xl flex items-center justify-center gap-2 font-bold transition-all active:scale-95 shadow-xl shadow-rose-900/20"

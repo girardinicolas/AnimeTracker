@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { type UserAnime } from '../db';
-import { animeActions } from '../hooks/useAnime';
+import { useAnime } from '../hooks/useAnime';
 import { X, Trash2, Save, Sparkles, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
@@ -11,9 +11,11 @@ interface AddAnimeModalProps {
     isOpen: boolean;
     onClose: () => void;
     editAnime?: UserAnime | null;
+    onSuccess?: () => void;
 }
 
-export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, editAnime }) => {
+export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, editAnime, onSuccess }) => {
+    const { actions } = useAnime();
     const { t } = useLanguage();
     const [isLoadingMetadata, setIsLoadingMetadata] = useState(false);
     const [suggestions, setSuggestions] = useState<AnimeMetadata[]>([]);
@@ -116,16 +118,18 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
         }
 
         if (editAnime?.id) {
-            await animeActions.update(editAnime.id, currentData);
+            await actions.update(editAnime.id, currentData);
         } else {
-            await animeActions.add(currentData);
+            await actions.add(currentData);
         }
+        onSuccess?.();
         onClose();
     };
 
     const handleDelete = async () => {
         if (editAnime?.id && window.confirm(t('deleteConfirm'))) {
-            await animeActions.delete(editAnime.id);
+            await actions.delete(editAnime.id);
+            onSuccess?.();
             onClose();
         }
     };

@@ -7,39 +7,40 @@ export function useAnime(stato?: UserAnime['stato'], sortBy: 'recent' | 'oldest'
     const { user } = useAuth();
     const [animeList, setAnimeList] = useState<UserAnime[]>([]);
 
-    useEffect(() => {
+    const fetchAnime = async () => {
         if (!user) return;
+        let query = supabase
+            .from('anime')
+            .select('*')
+            .eq('user_id', user.id);
 
-        const fetchAnime = async () => {
-            let query = supabase
-                .from('anime')
-                .select('*')
-                .eq('user_id', user.id);
+        if (stato) {
+            query = query.eq('stato', stato);
+        }
 
-            if (stato) {
-                query = query.eq('stato', stato);
-            }
+        const { data, error } = await query;
 
-            const { data, error } = await query;
+        if (error) {
+            console.error("Error fetching anime:", error);
+            return;
+        }
 
-            if (error) {
-                console.error("Error fetching anime:", error);
-                return;
-            }
+        const results = (data || []) as UserAnime[];
 
-            const results = (data || []) as UserAnime[];
+        results.sort((a, b) => {
+            if (sortBy === 'recent') return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+            if (sortBy === 'oldest') return new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime();
+            if (sortBy === 'title') return a.titolo.localeCompare(b.titolo);
+            return 0;
+        });
 
-            results.sort((a, b) => {
-                if (sortBy === 'recent') return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
-                if (sortBy === 'oldest') return new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime();
-                if (sortBy === 'title') return a.titolo.localeCompare(b.titolo);
-                return 0;
-            });
+        setAnimeList(results);
+    };
 
-            setAnimeList(results);
-        };
-
+    useEffect(() => {
         fetchAnime();
+
+        if (!user) return;
 
         // Real-time subscription
         const subscription = supabase
@@ -54,64 +55,65 @@ export function useAnime(stato?: UserAnime['stato'], sortBy: 'recent' | 'oldest'
         };
     }, [user, stato, sortBy]);
 
-    return animeList;
-}
-
-export const animeActions = {
-    add: async (anime: Omit<UserAnime, 'id' | 'updated_at'>) => {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) {
-            console.error("User not found during add");
-            return;
-        }
-
-        const { error } = await supabase
-            .from('anime')
-            .insert({ ...anime, user_id: user.id });
-
-        if (error) console.error("Supabase Add Error:", error.message, error.details);
-        return { error };
-    },
-    update: async (id: number, anime: Partial<UserAnime>) => {
-        const { error } = await supabase
-            .from('anime')
-            .update({ ...anime, updated_at: new Date().toISOString() })
-            .eq('id', id);
-
-        if (error) console.error("Supabase Update Error:", error.message, error.details);
-        return { error };
-    },
-    delete: async (id: number) => {
-        const { error } = await supabase
-            .from('anime')
-            .delete()
-            .eq('id', id);
-
-        if (error) console.error("Supabase Delete Error:", error.message, error.details);
-        return { error };
-    },
-    incrementProgress: async (anime: UserAnime) => {
-        if (anime.id && anime.episodio_corrente < anime.episodi_totali) {
-            const nextEp = anime.episodio_corrente + 1;
-            let nextStato = anime.stato;
-
-            if (nextEp === anime.episodi_totali) {
-                nextStato = 'COMPLETED';
-            } else if (nextEp > 0 && anime.stato === 'PLANNING') {
-                nextStato = 'WATCHING';
-            }
+    const actions = {
+        add: async (anime: Omit<UserAnime, 'id' | 'updated_at'>) => {
+            if (!user) return { error: { message: "User not found" } };
 
             const { error } = await supabase
                 .from('anime')
-                .update({
-                    episodio_corrente: nextEp,
-                    stato: nextStato,
-                    updated_at: new Date().toISOString()
-                })
-                .eq('id', anime.id);
+                .insert({ ...anime, user_id: user.id });
 
-            if (error) console.error("Supabase Increment Error:", error.message, error.details);
+            if (error) console.error("Supabase Add Error:", error.message, error.details);
+            else fetchAnime();
             return { error };
+        },
+        update: async (id: number, anime: Partial<UserAnime>) => {
+            const { error } = await supabase
+                .from('anime')
+                .update({ ...anime, updated_at: new Date().toISOString() })
+                .eq('id', id);
+
+            if (error) console.error("Supabase Update Error:", error.message, error.details);
+            else fetchAnime();
+            return { error };
+        },
+        delete: async (id: number) => {
+            const { error } = await supabase
+                .from('anime')
+                .delete()
+                .eq('id', id);
+
+            if (error) console.error("Supabase Delete Error:", error.message, error.details);
+            else fetchAnime();
+            return { error };
+        },
+        incrementProgress: async (anime: UserAnime) => {
+            if (anime.id && anime.episodio_corrente < anime.episodi_totali) {
+                const nextEp = anime.episodio_corrente + 1;
+                let nextStato = anime.stato;
+
+                if (nextEp === anime.episodi_totali) {
+                    nextStato = 'COMPLETED';
+                } else if (nextEp > 0 && anime.stato === 'PLANNING') {
+                    nextStato = 'WATCHING';
+                }
+
+                const { error } = await supabase
+                    .from('anime')
+                    .update({
+                        episodio_corrente: nextEp,
+                        stato: nextStato,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('id', anime.id);
+
+                if (error) console.error("Supabase Increment Error:", error.message, error.details);
+                else fetchAnime();
+                return { error };
+            }
         }
-    }
-};
+    };
+
+    return { animeList, actions };
+}
+

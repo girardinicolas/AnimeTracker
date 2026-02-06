@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { type UserAnime } from '../db';
 import { useAnime } from '../hooks/useAnime';
 import { X, Trash2, Save, Sparkles, Loader2 } from 'lucide-react';
@@ -19,6 +19,7 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
     const { t } = useLanguage();
     const [isLoadingMetadata, setIsLoadingMetadata] = useState(false);
     const [suggestions, setSuggestions] = useState<AnimeMetadata[]>([]);
+    const wasSelected = useRef(false);
     const [formData, setFormData] = useState<Omit<UserAnime, 'id' | 'updated_at'>>({
         titolo: '',
         immagine_url: '',
@@ -58,6 +59,11 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
     useEffect(() => {
         if (editAnime) return; // Don't suggest when editing
 
+        if (wasSelected.current) {
+            wasSelected.current = false;
+            return;
+        }
+
         const timer = setTimeout(async () => {
             if (formData.titolo.trim().length >= 3) {
                 const results = await searchAnime(formData.titolo);
@@ -71,6 +77,7 @@ export const AddAnimeModal: React.FC<AddAnimeModalProps> = ({ isOpen, onClose, e
     }, [formData.titolo, editAnime]);
 
     const handleSelectSuggestion = (anime: AnimeMetadata) => {
+        wasSelected.current = true;
         setFormData(prev => ({
             ...prev,
             titolo: anime.titolo,

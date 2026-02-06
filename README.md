@@ -29,9 +29,9 @@ Non è necessario scaricare nulla! AnimeTracker è una **PWA (Progressive Web Ap
 
 - **☁️ Cloud Sync**: I tuoi dati sono al sicuro nel cloud di Supabase, accessibili ovunque.
 - **🔐 Auth Sicura**: Sistema di Login/Registrazione per proteggere la tua collezione personale.
-- **🚀 Performance Estreme**: Sviluppata con Vite e React per un caricamento istantaneo.
-- **🪄 Magic Autocomplete**: Suggerimenti in tempo reale mentre scrivi il titolo, con recupero automatico di poster e info.
-- **⭐ Official Ratings**: Voti ufficiali presi direttamente da MyAnimeList.
+- **⚡ Reactive UI**: Interfaccia ultra-reattiva; ogni aggiornamento di progresso o modifica è istantaneo senza ricaricare la pagina.
+- **🪄 Magic Autocomplete**: Suggerimenti intelligenti in tempo reale con recupero automatico di poster e info da MyAnimeList.
+- **⭐ Official Ratings**: Voti ufficiali e statistiche presi direttamente da MyAnimeList.
 - **🌍 Multi-lingua**: Supporto completo per Italiano e Inglese.
 - **📅 Season Tracking**: Tieni traccia della stagione specifica che stai guardando.
 - **🤖 Smart Flow**: Gli anime si spostano automaticamente tra le categorie in base al tuo progresso.
